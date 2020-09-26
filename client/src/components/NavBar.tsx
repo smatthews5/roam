@@ -31,7 +31,11 @@ const NavBar: React.FC<NavBarProps> = ({}) => {
   } else {
     body = (
       <Flex>
-        <Box>{data.me.username}</Box>
+        <NextLink href="/profile">
+          <Button variant="link" color="gray">
+            {data.me.username}
+          </Button>
+        </NextLink>
         <Button
           onClick={() => {
             logout();
