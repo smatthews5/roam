@@ -1,11 +1,26 @@
 import React from 'react';
-import { Box, Button, Heading, Image } from '@chakra-ui/core';
+import {
+  Box,
+  Button,
+  Heading,
+  Image,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  useDisclosure,
+} from '@chakra-ui/core';
 import Link from 'next/link';
 import NavBar from '../components/NavBar';
+import Find from './find';
 
 interface landingProps {}
 
 const Index: React.FC<landingProps> = ({}) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Box>
       <NavBar />
@@ -40,6 +55,7 @@ const Index: React.FC<landingProps> = ({}) => {
             position="absolute"
             bottom="130px"
             left="350px"
+            rounded="20px"
           >
             Explore Locations
           </Button>
@@ -52,9 +68,28 @@ const Index: React.FC<landingProps> = ({}) => {
           position="absolute"
           bottom="130px"
           right="350px"
+          rounded="20px"
+          onClick={onOpen}
         >
           Find My Perfect Location
         </Button>
+        <Modal isOpen={isOpen} onClose={onClose} size="800px">
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Choose you prefernces</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody pb={6}>
+              <Find></Find>
+            </ModalBody>
+
+            <ModalFooter>
+              <Button variantColor="blue" mr={3}>
+                Search
+              </Button>
+              <Button onClick={onClose}>Cancel</Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
         <Image
           src="/landing-page.jpg"
           alt="boat on lake"

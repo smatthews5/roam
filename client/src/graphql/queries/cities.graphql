@@ -1,0 +1,10 @@
+query Cities {
+  cities {
+    id
+    name
+    imageUrl
+    timezone
+    createdAt
+    updatedAt
+  }
+}

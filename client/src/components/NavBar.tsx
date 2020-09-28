@@ -52,7 +52,7 @@ const NavBar: React.FC<NavBarProps> = ({}) => {
   }
   return (
     <Flex backgroundColor="#008B8B" p={4}>
-      <NextLink href="/landing">
+      <NextLink href="/">
         <Button variant="link" alignSelf="start" color="white">
           roam
         </Button>

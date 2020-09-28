@@ -21,7 +21,7 @@ export type Query = {
 
 
 export type QueryCityArgs = {
-  id: Scalars['Int'];
+  id: Scalars['Float'];
 };
 
 export type City = {
@@ -54,9 +54,7 @@ export type Mutation = {
 
 
 export type MutationCreateCityArgs = {
-  imageUrl: Scalars['String'];
-  timezone: Scalars['String'];
-  name: Scalars['String'];
+  options: CityDetailsInput;
 };
 
 
@@ -80,6 +78,12 @@ export type MutationRegisterArgs = {
 
 export type MutationLoginArgs = {
   options: UsernamePasswordInput;
+};
+
+export type CityDetailsInput = {
+  name: Scalars['String'];
+  timezone: Scalars['String'];
+  imageUrl: Scalars['String'];
 };
 
 export type UserResponse = {
@@ -152,6 +156,17 @@ export type RegisterMutation = (
   ) }
 );
 
+export type CitiesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CitiesQuery = (
+  { __typename?: 'Query' }
+  & { cities: Array<(
+    { __typename?: 'City' }
+    & Pick<City, 'id' | 'name' | 'imageUrl' | 'timezone' | 'createdAt' | 'updatedAt'>
+  )> }
+);
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -211,6 +226,22 @@ export const RegisterDocument = gql`
 
 export function useRegisterMutation() {
   return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
+};
+export const CitiesDocument = gql`
+    query Cities {
+  cities {
+    id
+    name
+    imageUrl
+    timezone
+    createdAt
+    updatedAt
+  }
+}
+    `;
+
+export function useCitiesQuery(options: Omit<Urql.UseQueryArgs<CitiesQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<CitiesQuery>({ query: CitiesDocument, ...options });
 };
 export const MeDocument = gql`
     query Me {
