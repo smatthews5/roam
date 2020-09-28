@@ -12,17 +12,20 @@ import connectRedis from 'connect-redis';
 import cors from 'cors';
 import { User } from './entities/User';
 import { City } from './entities/City';
+import path from 'path';
 
 const main = async () => {
   const conn = await createConnection({
     type: 'postgres',
-    database: 'roam2',
     username: 'postgres',
     password: 'postgres',
+    database: 'roam2',
+    // synchronize: true,
     logging: true,
-    synchronize: true,
-    entities: [City, User],
+    migrations: [path.join(__dirname, './migrations/*')],
+    entities: [User, City],
   });
+  await conn.runMigrations();
 
   const app = express();
 

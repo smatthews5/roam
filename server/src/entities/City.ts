@@ -34,4 +34,12 @@ export class City extends BaseEntity {
   @Field()
   @Column()
   imageUrl: string;
+
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  climate: string;
+
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  lifestyle: string;
 }
