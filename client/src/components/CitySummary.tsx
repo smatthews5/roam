@@ -49,8 +49,12 @@ const CitySummary: React.FC<CitySummaryProps> = ({
 
   useEffect(() => {
     let cities: number[] = [];
-    const favouritesData = data.userFavourites;
-    favouritesData.map((favourite: Favourite) => cities.push(favourite.cityId));
+    if (userId) {
+      const favouritesData = data.userFavourites;
+      favouritesData.map((favourite: Favourite) =>
+        cities.push(favourite.cityId)
+      );
+    }
     setFavouriteCities(cities);
   }, []);
 
