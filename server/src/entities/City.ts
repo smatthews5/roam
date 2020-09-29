@@ -4,9 +4,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Favourite } from './Favourite';
 
 @ObjectType()
 @Entity()
@@ -42,4 +44,7 @@ export class City extends BaseEntity {
   @Field({ nullable: true })
   @Column({ nullable: true })
   lifestyle: string;
+
+  @OneToMany(() => Favourite, (favourite) => favourite.city)
+  favourites: Favourite[];
 }

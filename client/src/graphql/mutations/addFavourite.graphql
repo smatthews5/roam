@@ -1,0 +1,3 @@
+mutation AddFavourite($cityId: Int!, $userId: Int!) {
+  saveFavourite(cityId: $cityId, userId: $userId)
+}

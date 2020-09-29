@@ -13,6 +13,8 @@ import cors from 'cors';
 import { User } from './entities/User';
 import { City } from './entities/City';
 import path from 'path';
+import { Favourite } from './entities/Favourite';
+import { FavouriteResolver } from './resolvers/favourite';
 
 const main = async () => {
   const conn = await createConnection({
@@ -23,7 +25,7 @@ const main = async () => {
     // synchronize: true,
     logging: true,
     migrations: [path.join(__dirname, './migrations/*')],
-    entities: [User, City],
+    entities: [User, City, Favourite],
   });
   await conn.runMigrations();
 
@@ -47,7 +49,7 @@ const main = async () => {
         disableTouch: true,
       }),
       cookie: {
-        maxAge: 1000 * 60 * 60 * 24,
+        maxAge: 1000 * 60 * 60 * 24 * 365,
         httpOnly: true,
         sameSite: 'lax',
         secure: __prod__,
@@ -60,7 +62,7 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [CityResolver, UserResolver],
+      resolvers: [CityResolver, UserResolver, FavouriteResolver],
       validate: false,
     }),
     context: ({ req, res }) => ({ req, res }),

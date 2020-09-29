@@ -76,7 +76,7 @@ const Index: React.FC<landingProps> = ({}) => {
         <Modal isOpen={isOpen} onClose={onClose} size="800px">
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Choose you prefernces</ModalHeader>
+            <ModalHeader>Choose you preferences</ModalHeader>
             <ModalCloseButton />
             <ModalBody pb={6}>
               <Find></Find>

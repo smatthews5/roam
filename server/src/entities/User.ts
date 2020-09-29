@@ -2,10 +2,13 @@ import { Field, ObjectType } from 'type-graphql';
 import {
   BaseEntity,
   Column,
+  CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Favourite } from './Favourite';
 
 @ObjectType()
 @Entity()
@@ -15,7 +18,7 @@ export class User extends BaseEntity {
   id!: number;
 
   @Field(() => String)
-  @PrimaryGeneratedColumn()
+  @CreateDateColumn()
   createdAt: Date;
 
   @Field(() => String)
@@ -28,4 +31,7 @@ export class User extends BaseEntity {
 
   @Column()
   password!: string;
+
+  @OneToMany(() => Favourite, (favourite) => favourite.user)
+  favourites: Favourite[];
 }

@@ -1,0 +1,5 @@
+query UserFavourites($userId: Int!) {
+  userFavourites(userId: $userId) {
+    cityId
+  }
+}

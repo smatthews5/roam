@@ -15,13 +15,26 @@ export type Scalars = {
 export type Query = {
   __typename?: 'Query';
   cities: Array<City>;
+  citiesFiltered: Array<City>;
   city?: Maybe<City>;
   me?: Maybe<User>;
+  favourites: Array<Favourite>;
+  userFavourites?: Maybe<Array<Favourite>>;
+};
+
+
+export type QueryCitiesFilteredArgs = {
+  options: CityFilters;
 };
 
 
 export type QueryCityArgs = {
   id: Scalars['Float'];
+};
+
+
+export type QueryUserFavouritesArgs = {
+  userId: Scalars['Int'];
 };
 
 export type City = {
@@ -32,6 +45,13 @@ export type City = {
   name: Scalars['String'];
   timezone: Scalars['String'];
   imageUrl: Scalars['String'];
+  climate?: Maybe<Scalars['String']>;
+  lifestyle?: Maybe<Scalars['String']>;
+};
+
+export type CityFilters = {
+  timezone: Scalars['String'];
+  name: Scalars['String'];
 };
 
 export type User = {
@@ -42,6 +62,13 @@ export type User = {
   username: Scalars['String'];
 };
 
+export type Favourite = {
+  __typename?: 'Favourite';
+  id: Scalars['Float'];
+  cityId: Scalars['Float'];
+  userId: Scalars['Float'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createCity: City;
@@ -50,6 +77,8 @@ export type Mutation = {
   register: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
+  saveFavourite: Scalars['Boolean'];
+  removeFavourite: Scalars['Boolean'];
 };
 
 
@@ -60,6 +89,8 @@ export type MutationCreateCityArgs = {
 
 export type MutationUpdateCityArgs = {
   imageUrl?: Maybe<Scalars['String']>;
+  lifestyle?: Maybe<Scalars['String']>;
+  climate?: Maybe<Scalars['String']>;
   timezone?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   id: Scalars['Float'];
@@ -80,10 +111,24 @@ export type MutationLoginArgs = {
   options: UsernamePasswordInput;
 };
 
+
+export type MutationSaveFavouriteArgs = {
+  cityId: Scalars['Int'];
+  userId: Scalars['Int'];
+};
+
+
+export type MutationRemoveFavouriteArgs = {
+  cityId: Scalars['Int'];
+  userId: Scalars['Int'];
+};
+
 export type CityDetailsInput = {
   name: Scalars['String'];
   timezone: Scalars['String'];
   imageUrl: Scalars['String'];
+  climate: Scalars['String'];
+  lifestyle: Scalars['String'];
 };
 
 export type UserResponse = {
@@ -106,6 +151,17 @@ export type UsernamePasswordInput = {
 export type RegularUserFragment = (
   { __typename?: 'User' }
   & Pick<User, 'id' | 'username'>
+);
+
+export type AddFavouriteMutationVariables = Exact<{
+  cityId: Scalars['Int'];
+  userId: Scalars['Int'];
+}>;
+
+
+export type AddFavouriteMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'saveFavourite'>
 );
 
 export type LoginMutationVariables = Exact<{
@@ -156,6 +212,17 @@ export type RegisterMutation = (
   ) }
 );
 
+export type RemoveFavouriteMutationVariables = Exact<{
+  cityId: Scalars['Int'];
+  userId: Scalars['Int'];
+}>;
+
+
+export type RemoveFavouriteMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'removeFavourite'>
+);
+
 export type CitiesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -165,6 +232,19 @@ export type CitiesQuery = (
     { __typename?: 'City' }
     & Pick<City, 'id' | 'name' | 'imageUrl' | 'timezone' | 'createdAt' | 'updatedAt'>
   )> }
+);
+
+export type UserFavouritesQueryVariables = Exact<{
+  userId: Scalars['Int'];
+}>;
+
+
+export type UserFavouritesQuery = (
+  { __typename?: 'Query' }
+  & { userFavourites?: Maybe<Array<(
+    { __typename?: 'Favourite' }
+    & Pick<Favourite, 'cityId'>
+  )>> }
 );
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
@@ -184,6 +264,15 @@ export const RegularUserFragmentDoc = gql`
   username
 }
     `;
+export const AddFavouriteDocument = gql`
+    mutation AddFavourite($cityId: Int!, $userId: Int!) {
+  saveFavourite(cityId: $cityId, userId: $userId)
+}
+    `;
+
+export function useAddFavouriteMutation() {
+  return Urql.useMutation<AddFavouriteMutation, AddFavouriteMutationVariables>(AddFavouriteDocument);
+};
 export const LoginDocument = gql`
     mutation Login($username: String!, $password: String!) {
   login(options: {username: $username, password: $password}) {
@@ -227,6 +316,15 @@ export const RegisterDocument = gql`
 export function useRegisterMutation() {
   return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
 };
+export const RemoveFavouriteDocument = gql`
+    mutation RemoveFavourite($cityId: Int!, $userId: Int!) {
+  removeFavourite(cityId: $cityId, userId: $userId)
+}
+    `;
+
+export function useRemoveFavouriteMutation() {
+  return Urql.useMutation<RemoveFavouriteMutation, RemoveFavouriteMutationVariables>(RemoveFavouriteDocument);
+};
 export const CitiesDocument = gql`
     query Cities {
   cities {
@@ -242,6 +340,17 @@ export const CitiesDocument = gql`
 
 export function useCitiesQuery(options: Omit<Urql.UseQueryArgs<CitiesQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<CitiesQuery>({ query: CitiesDocument, ...options });
+};
+export const UserFavouritesDocument = gql`
+    query UserFavourites($userId: Int!) {
+  userFavourites(userId: $userId) {
+    cityId
+  }
+}
+    `;
+
+export function useUserFavouritesQuery(options: Omit<Urql.UseQueryArgs<UserFavouritesQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<UserFavouritesQuery>({ query: UserFavouritesDocument, ...options });
 };
 export const MeDocument = gql`
     query Me {
