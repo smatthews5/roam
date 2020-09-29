@@ -17,9 +17,12 @@ export type Query = {
   cities: Array<City>;
   citiesFiltered: Array<City>;
   city?: Maybe<City>;
+  citiesFavourite?: Maybe<Array<City>>;
   me?: Maybe<User>;
   favourites: Array<Favourite>;
   userFavourites?: Maybe<Array<Favourite>>;
+  checklists: Array<Checklist>;
+  checklist?: Maybe<Checklist>;
 };
 
 
@@ -33,7 +36,17 @@ export type QueryCityArgs = {
 };
 
 
+export type QueryCitiesFavouriteArgs = {
+  userId: Scalars['Int'];
+};
+
+
 export type QueryUserFavouritesArgs = {
+  userId: Scalars['Int'];
+};
+
+
+export type QueryChecklistArgs = {
   userId: Scalars['Int'];
 };
 
@@ -69,6 +82,17 @@ export type Favourite = {
   userId: Scalars['Float'];
 };
 
+export type Checklist = {
+  __typename?: 'Checklist';
+  id: Scalars['Float'];
+  userId: Scalars['Float'];
+  accomodation: Scalars['Boolean'];
+  bank: Scalars['Boolean'];
+  medical: Scalars['Boolean'];
+  workspace: Scalars['Boolean'];
+  visa: Scalars['Boolean'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createCity: City;
@@ -79,6 +103,8 @@ export type Mutation = {
   logout: Scalars['Boolean'];
   saveFavourite: Scalars['Boolean'];
   removeFavourite: Scalars['Boolean'];
+  createChecklist: Checklist;
+  updateWorkspace: Checklist;
 };
 
 
@@ -120,6 +146,18 @@ export type MutationSaveFavouriteArgs = {
 
 export type MutationRemoveFavouriteArgs = {
   cityId: Scalars['Int'];
+  userId: Scalars['Int'];
+};
+
+
+export type MutationCreateChecklistArgs = {
+  userId: Scalars['Int'];
+};
+
+
+export type MutationUpdateWorkspaceArgs = {
+  value: Scalars['Boolean'];
+  field: Scalars['String'];
   userId: Scalars['Int'];
 };
 
@@ -223,6 +261,34 @@ export type RemoveFavouriteMutation = (
   & Pick<Mutation, 'removeFavourite'>
 );
 
+export type UpdateChecklistMutationVariables = Exact<{
+  userId: Scalars['Int'];
+  field: Scalars['String'];
+  value: Scalars['Boolean'];
+}>;
+
+
+export type UpdateChecklistMutation = (
+  { __typename?: 'Mutation' }
+  & { updateWorkspace: (
+    { __typename?: 'Checklist' }
+    & Pick<Checklist, 'id' | 'userId' | 'workspace' | 'bank' | 'visa' | 'medical' | 'accomodation'>
+  ) }
+);
+
+export type ChecklistQueryVariables = Exact<{
+  userId: Scalars['Int'];
+}>;
+
+
+export type ChecklistQuery = (
+  { __typename?: 'Query' }
+  & { checklist?: Maybe<(
+    { __typename?: 'Checklist' }
+    & Pick<Checklist, 'id' | 'userId' | 'bank' | 'accomodation' | 'visa' | 'workspace' | 'medical'>
+  )> }
+);
+
 export type CitiesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -232,6 +298,19 @@ export type CitiesQuery = (
     { __typename?: 'City' }
     & Pick<City, 'id' | 'name' | 'imageUrl' | 'timezone' | 'createdAt' | 'updatedAt'>
   )> }
+);
+
+export type CitiesFavouriteQueryVariables = Exact<{
+  userId: Scalars['Int'];
+}>;
+
+
+export type CitiesFavouriteQuery = (
+  { __typename?: 'Query' }
+  & { citiesFavourite?: Maybe<Array<(
+    { __typename?: 'City' }
+    & Pick<City, 'id' | 'name' | 'imageUrl' | 'climate' | 'lifestyle' | 'timezone'>
+  )>> }
 );
 
 export type UserFavouritesQueryVariables = Exact<{
@@ -325,6 +404,40 @@ export const RemoveFavouriteDocument = gql`
 export function useRemoveFavouriteMutation() {
   return Urql.useMutation<RemoveFavouriteMutation, RemoveFavouriteMutationVariables>(RemoveFavouriteDocument);
 };
+export const UpdateChecklistDocument = gql`
+    mutation UpdateChecklist($userId: Int!, $field: String!, $value: Boolean!) {
+  updateWorkspace(userId: $userId, field: $field, value: $value) {
+    id
+    userId
+    workspace
+    bank
+    visa
+    medical
+    accomodation
+  }
+}
+    `;
+
+export function useUpdateChecklistMutation() {
+  return Urql.useMutation<UpdateChecklistMutation, UpdateChecklistMutationVariables>(UpdateChecklistDocument);
+};
+export const ChecklistDocument = gql`
+    query Checklist($userId: Int!) {
+  checklist(userId: $userId) {
+    id
+    userId
+    bank
+    accomodation
+    visa
+    workspace
+    medical
+  }
+}
+    `;
+
+export function useChecklistQuery(options: Omit<Urql.UseQueryArgs<ChecklistQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<ChecklistQuery>({ query: ChecklistDocument, ...options });
+};
 export const CitiesDocument = gql`
     query Cities {
   cities {
@@ -340,6 +453,22 @@ export const CitiesDocument = gql`
 
 export function useCitiesQuery(options: Omit<Urql.UseQueryArgs<CitiesQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<CitiesQuery>({ query: CitiesDocument, ...options });
+};
+export const CitiesFavouriteDocument = gql`
+    query CitiesFavourite($userId: Int!) {
+  citiesFavourite(userId: $userId) {
+    id
+    name
+    imageUrl
+    climate
+    lifestyle
+    timezone
+  }
+}
+    `;
+
+export function useCitiesFavouriteQuery(options: Omit<Urql.UseQueryArgs<CitiesFavouriteQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<CitiesFavouriteQuery>({ query: CitiesFavouriteDocument, ...options });
 };
 export const UserFavouritesDocument = gql`
     query UserFavourites($userId: Int!) {

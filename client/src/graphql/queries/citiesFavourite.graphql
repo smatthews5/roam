@@ -1,0 +1,10 @@
+query CitiesFavourite($userId: Int!) {
+  citiesFavourite(userId: $userId) {
+    id
+    name
+    imageUrl
+    climate
+    lifestyle
+    timezone
+  }
+}

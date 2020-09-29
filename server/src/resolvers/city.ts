@@ -1,4 +1,12 @@
-import { Resolver, Query, Arg, Mutation, InputType, Field } from 'type-graphql';
+import {
+  Resolver,
+  Query,
+  Arg,
+  Mutation,
+  InputType,
+  Field,
+  Int,
+} from 'type-graphql';
 import { getConnection } from 'typeorm';
 import { City } from '../entities/City';
 
@@ -84,5 +92,19 @@ export class CityResolver {
   async deleteCity(@Arg('id') id: number): Promise<boolean> {
     await City.delete(id);
     return true;
+  }
+
+  @Query(() => [City], { nullable: true })
+  async citiesFavourite(
+    @Arg('userId', () => Int) userId: number
+  ): Promise<City[] | undefined> {
+    const cities = await getConnection()
+      .createQueryBuilder()
+      .select('city')
+      .from(City, 'city')
+      .innerJoinAndSelect('city.favourites', 'favourites')
+      .where('favourites.userId = :userId', { userId: userId })
+      .getMany();
+    return cities;
   }
 }

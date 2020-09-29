@@ -10,6 +10,7 @@ import {
   useRemoveFavouriteMutation,
 } from '../generated/graphql';
 import { useQuery } from 'urql';
+import refetchCityData from './profile';
 
 const GET_FAVOURITES = `
   query ($userId: Int!) {

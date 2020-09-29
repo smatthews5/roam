@@ -1,0 +1,11 @@
+mutation UpdateChecklist($userId: Int!, $field: String!, $value: Boolean!) {
+  updateWorkspace(userId: $userId, field: $field, value: $value) {
+    id
+    userId
+    workspace
+    bank
+    visa
+    medical
+    accomodation
+  }
+}

@@ -15,6 +15,8 @@ import { City } from './entities/City';
 import path from 'path';
 import { Favourite } from './entities/Favourite';
 import { FavouriteResolver } from './resolvers/favourite';
+import { Checklist } from './entities/Checklist';
+import { ChecklistResolver } from './resolvers/checklist';
 
 const main = async () => {
   const conn = await createConnection({
@@ -25,7 +27,7 @@ const main = async () => {
     // synchronize: true,
     logging: true,
     migrations: [path.join(__dirname, './migrations/*')],
-    entities: [User, City, Favourite],
+    entities: [User, City, Favourite, Checklist],
   });
   await conn.runMigrations();
 
@@ -62,7 +64,12 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [CityResolver, UserResolver, FavouriteResolver],
+      resolvers: [
+        CityResolver,
+        UserResolver,
+        FavouriteResolver,
+        ChecklistResolver,
+      ],
       validate: false,
     }),
     context: ({ req, res }) => ({ req, res }),

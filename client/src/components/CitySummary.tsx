@@ -21,7 +21,7 @@ const CitySummary: React.FC<CitySummaryProps> = ({
   return (
     <Box maxW="sm" borderWidth="1px" rounded="lg" overflow="hidden">
       <Image src={image} w="100%" h="100%" objectFit="cover" />
-      <Badge rounded="full" px="2" variantColor="teal" ml="1">
+      <Badge rounded="full" px="2" variantColor="purple" ml="1">
         {timezone}
       </Badge>
       <Flex justifyContent="space-between">

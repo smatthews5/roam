@@ -1,5 +1,7 @@
+import { City } from 'src/entities/City';
 import { Resolver, Query, Arg, Mutation, Int } from 'type-graphql';
 import { getConnection } from 'typeorm';
+import { factory } from 'typescript';
 import { Favourite } from '../entities/Favourite';
 
 @Resolver()
@@ -21,6 +23,20 @@ export class FavouriteResolver {
       .getMany();
     return favourites;
   }
+
+  // @Query(() => [Favourite], { nullable: true })
+  // async userFavouritesDetail(
+  //   @Arg('userId', () => Int) userId: number
+  // ): Promise<Favourite[] | undefined> {
+  //   const favourites = await getConnection()
+  //     .createQueryBuilder()
+  //     .select('favourite')
+  //     .from(Favourite, 'favourite')
+  //     .innerJoinAndSelect('favourite.city', 'city')
+  //     .where('favourite.userId = :userId', { userId: userId })
+  //     .getMany();
+  //   return favourites;
+  // }
 
   @Mutation(() => Boolean)
   async saveFavourite(

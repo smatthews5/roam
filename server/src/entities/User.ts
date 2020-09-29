@@ -5,10 +5,12 @@ import {
   CreateDateColumn,
   Entity,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Favourite } from './Favourite';
+import { Checklist } from './Checklist';
 
 @ObjectType()
 @Entity()
@@ -34,4 +36,7 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Favourite, (favourite) => favourite.user)
   favourites: Favourite[];
+
+  @OneToOne(() => Checklist, (checklist) => checklist.user)
+  checklist: Checklist;
 }

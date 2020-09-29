@@ -8,6 +8,9 @@ import {
   MeQuery,
   RegisterMutation,
   LogoutMutation,
+  AddFavouriteMutation,
+  CitiesFavouriteQuery,
+  AddFavouriteMutationVariables,
 } from '../generated/graphql';
 
 function betterUpdateQuery<Result, Query>(
@@ -69,6 +72,26 @@ const client = createClient({
               }
             );
           },
+          addFavourite: (result, args, cache, info) => {
+            cache.invalidate({
+              __typename: 'Favourite',
+              id: (args as AddFavouriteMutationVariables).cityId,
+            });
+          },
+          removeFavourite: (result, args, cache, info) => {
+            cache.invalidate({
+              __typename: 'Favourite',
+              id: (args as AddFavouriteMutationVariables).cityId,
+            });
+          },
+          // addFavourite: (_result, args, cache, info) => {
+          //   betterUpdateQuery<AddFavouriteMutation, CitiesFavouriteQuery>(
+          //     cache,
+          //     { query: MeDocument },
+          //     _result,
+          //     (result, query) => void
+          //   );
+          // },
         },
       },
     }),

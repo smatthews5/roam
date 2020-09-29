@@ -1,0 +1,11 @@
+query Checklist($userId: Int!) {
+  checklist(userId: $userId) {
+    id
+    userId
+    bank
+    accomodation
+    visa
+    workspace
+    medical
+  }
+}
