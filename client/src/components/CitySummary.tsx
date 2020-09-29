@@ -1,20 +1,5 @@
 import { Box, Image, Badge, Flex } from '@chakra-ui/core';
-import React, { useEffect, useState } from 'react';
-import { useQuery } from 'urql';
-import {
-  Favourite,
-  useAddFavouriteMutation,
-  useMeQuery,
-  useRemoveFavouriteMutation,
-} from '../generated/graphql';
-
-// const GET_FAVOURITES = `
-//   query ($userId: Int!) {
-//     userFavourites(userId: $userId) {
-//       cityId
-//     }
-//   }
-// `;
+import React from 'react';
 
 interface CitySummaryProps {
   id: number;
@@ -33,56 +18,6 @@ const CitySummary: React.FC<CitySummaryProps> = ({
   handleClick,
   favouriteCities,
 }) => {
-  // const [favouriteCities, setFavouriteCities] = useState<number[]>([]);
-
-  // const [{ data: userData }] = useMeQuery();
-  // const userId = userData?.me?.id;
-
-  // const [{ data }, updateFavourites] = useQuery({
-  //   query: GET_FAVOURITES,
-  //   variables: { userId },
-  // });
-
-  // const refresh = () => {
-  //   updateFavourites({ requestPolicy: 'network-only' });
-  // };
-
-  // const [, addFavourite] = useAddFavouriteMutation();
-
-  // const [, removeFavourite] = useRemoveFavouriteMutation();
-
-  // useEffect(() => {
-  //   let cities: number[] = [];
-  //   if (userId) {
-  //     const favouritesData = data.userFavourites;
-  //     favouritesData.map((favourite: Favourite) =>
-  //       cities.push(favourite.cityId)
-  //     );
-  //   }
-  //   setFavouriteCities(cities);
-  // }, []);
-
-  // const handleToggle = () => {
-  //   console.log(data.userFavourites);
-  //   console.log(favouriteCities);
-  //   if (favouriteCities.includes(id) && userId) {
-  //     let newArr: number[] = [...favouriteCities];
-  //     let index = newArr.indexOf(id);
-  //     newArr.splice(index, 1);
-  //     setFavouriteCities(newArr);
-  //     removeFavourite({ cityId: id, userId: userId });
-  //     refresh();
-  //     console.log(id, 'booo removed from favourites');
-  //   } else if (userId) {
-  //     let newArr: number[] = [...favouriteCities];
-  //     newArr.push(id);
-  //     setFavouriteCities(newArr);
-  //     addFavourite({ cityId: id, userId: userId });
-  //     refresh();
-  //     console.log(id, 'yay! added to favourites');
-  //   }
-  // };
-
   return (
     <Box maxW="sm" borderWidth="1px" rounded="lg" overflow="hidden">
       <Image src={image} w="100%" h="100%" objectFit="cover" />
