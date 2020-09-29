@@ -8,19 +8,21 @@ import {
   useRemoveFavouriteMutation,
 } from '../generated/graphql';
 
-const GET_FAVOURITES = `
-  query ($userId: Int!) {
-    userFavourites(userId: $userId) {
-      cityId
-    }
-  }
-`;
+// const GET_FAVOURITES = `
+//   query ($userId: Int!) {
+//     userFavourites(userId: $userId) {
+//       cityId
+//     }
+//   }
+// `;
 
 interface CitySummaryProps {
   id: number;
   name: string;
   timezone: string;
   image: string;
+  handleClick: (id: number) => void;
+  favouriteCities: number[];
 }
 
 const CitySummary: React.FC<CitySummaryProps> = ({
@@ -28,56 +30,58 @@ const CitySummary: React.FC<CitySummaryProps> = ({
   name,
   timezone,
   image,
+  handleClick,
+  favouriteCities,
 }) => {
-  const [favouriteCities, setFavouriteCities] = useState<number[]>([]);
+  // const [favouriteCities, setFavouriteCities] = useState<number[]>([]);
 
-  const [{ data: userData }] = useMeQuery();
-  const userId = userData?.me?.id;
+  // const [{ data: userData }] = useMeQuery();
+  // const userId = userData?.me?.id;
 
-  const [{ data }, updateFavourites] = useQuery({
-    query: GET_FAVOURITES,
-    variables: { userId },
-  });
+  // const [{ data }, updateFavourites] = useQuery({
+  //   query: GET_FAVOURITES,
+  //   variables: { userId },
+  // });
 
-  const refresh = () => {
-    updateFavourites({ requestPolicy: 'network-only' });
-  };
+  // const refresh = () => {
+  //   updateFavourites({ requestPolicy: 'network-only' });
+  // };
 
-  const [, addFavourite] = useAddFavouriteMutation();
+  // const [, addFavourite] = useAddFavouriteMutation();
 
-  const [, removeFavourite] = useRemoveFavouriteMutation();
+  // const [, removeFavourite] = useRemoveFavouriteMutation();
 
-  useEffect(() => {
-    let cities: number[] = [];
-    if (userId) {
-      const favouritesData = data.userFavourites;
-      favouritesData.map((favourite: Favourite) =>
-        cities.push(favourite.cityId)
-      );
-    }
-    setFavouriteCities(cities);
-  }, []);
+  // useEffect(() => {
+  //   let cities: number[] = [];
+  //   if (userId) {
+  //     const favouritesData = data.userFavourites;
+  //     favouritesData.map((favourite: Favourite) =>
+  //       cities.push(favourite.cityId)
+  //     );
+  //   }
+  //   setFavouriteCities(cities);
+  // }, []);
 
-  const handleToggle = () => {
-    console.log(data.userFavourites);
-    console.log(favouriteCities);
-    if (favouriteCities.includes(id) && userId) {
-      let newArr: number[] = [...favouriteCities];
-      let index = newArr.indexOf(id);
-      newArr.splice(index, 1);
-      setFavouriteCities(newArr);
-      removeFavourite({ cityId: id, userId: userId });
-      refresh();
-      console.log(id, 'booo removed from favourites');
-    } else if (userId) {
-      let newArr: number[] = [...favouriteCities];
-      newArr.push(id);
-      setFavouriteCities(newArr);
-      addFavourite({ cityId: id, userId: userId });
-      refresh();
-      console.log(id, 'yay! added to favourites');
-    }
-  };
+  // const handleToggle = () => {
+  //   console.log(data.userFavourites);
+  //   console.log(favouriteCities);
+  //   if (favouriteCities.includes(id) && userId) {
+  //     let newArr: number[] = [...favouriteCities];
+  //     let index = newArr.indexOf(id);
+  //     newArr.splice(index, 1);
+  //     setFavouriteCities(newArr);
+  //     removeFavourite({ cityId: id, userId: userId });
+  //     refresh();
+  //     console.log(id, 'booo removed from favourites');
+  //   } else if (userId) {
+  //     let newArr: number[] = [...favouriteCities];
+  //     newArr.push(id);
+  //     setFavouriteCities(newArr);
+  //     addFavourite({ cityId: id, userId: userId });
+  //     refresh();
+  //     console.log(id, 'yay! added to favourites');
+  //   }
+  // };
 
   return (
     <Box maxW="sm" borderWidth="1px" rounded="lg" overflow="hidden">
@@ -102,7 +106,7 @@ const CitySummary: React.FC<CitySummaryProps> = ({
           w="20px"
           h="20px"
           mr="20px"
-          onClick={handleToggle}
+          onClick={() => handleClick(id)}
         />
       </Flex>
     </Box>
