@@ -10,7 +10,6 @@ import {
   useRemoveFavouriteMutation,
 } from '../generated/graphql';
 import { useQuery } from 'urql';
-import refetchCityData from './profile';
 
 const GET_FAVOURITES = `
   query ($userId: Int!) {
@@ -25,8 +24,6 @@ interface exploreProps {}
 const Explore: React.FC<exploreProps> = () => {
   const [{ data: cityData }] = useCitiesQuery();
 
-  const [favouriteCities, setFavouriteCities] = useState<number[]>([]);
-
   const [{ data: userData }] = useMeQuery();
   const userId = userData?.me?.id;
 
@@ -39,20 +36,28 @@ const Explore: React.FC<exploreProps> = () => {
     updateFavourites({ requestPolicy: 'network-only' });
   };
 
+  let cities: number[] = [];
+  if (userId && data) {
+    const favouritesData = data.userFavourites;
+    favouritesData.map((favourite: Favourite) => cities.push(favourite.cityId));
+  }
+
+  const [favouriteCities, setFavouriteCities] = useState<number[]>(cities);
+
   const [, addFavourite] = useAddFavouriteMutation();
 
   const [, removeFavourite] = useRemoveFavouriteMutation();
 
-  useEffect(() => {
-    let cities: number[] = [];
-    if (userId && data) {
-      const favouritesData = data.userFavourites;
-      favouritesData.map((favourite: Favourite) =>
-        cities.push(favourite.cityId)
-      );
-    }
-    setFavouriteCities(cities);
-  }, favouriteCities);
+  // useEffect(() => {
+  //   let cities: number[] = [];
+  //   if (userId && data) {
+  //     const favouritesData = data.userFavourites;
+  //     favouritesData.map((favourite: Favourite) =>
+  //       cities.push(favourite.cityId)
+  //     );
+  //   }
+  //   setFavouriteCities(cities);
+  // }, favouriteCities);
 
   const handleToggle = (id: number) => {
     refresh();

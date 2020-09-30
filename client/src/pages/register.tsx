@@ -3,7 +3,10 @@ import { Form, Formik } from 'formik';
 import { Box, Button } from '@chakra-ui/core';
 import Wrapper from '../components/Wrapper';
 import InputField from '../components/InputField';
-import { useRegisterMutation } from '../generated/graphql';
+import {
+  // useCreateChecklistMutation,
+  useRegisterMutation,
+} from '../generated/graphql';
 import { toErrorMap } from '../utils/toErrorMap';
 import { useRouter } from 'next/router';
 import NavBar from '../components/NavBar';
@@ -13,6 +16,7 @@ interface registerProps {}
 const Register: React.FC<registerProps> = ({}) => {
   const router = useRouter();
   const [, register] = useRegisterMutation();
+  // const [, createChecklist] = useCreateChecklistMutation();
   return (
     <Box>
       <NavBar />
@@ -24,6 +28,7 @@ const Register: React.FC<registerProps> = ({}) => {
             if (response.data?.register.errors) {
               setErrors(toErrorMap(response.data.register.errors));
             } else if (response.data?.register.user) {
+              // createChecklist({ userId: response.data?.register.user.id });
               router.push('/');
             }
           }}

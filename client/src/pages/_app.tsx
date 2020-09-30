@@ -84,14 +84,6 @@ const client = createClient({
               id: (args as AddFavouriteMutationVariables).cityId,
             });
           },
-          // addFavourite: (_result, args, cache, info) => {
-          //   betterUpdateQuery<AddFavouriteMutation, CitiesFavouriteQuery>(
-          //     cache,
-          //     { query: MeDocument },
-          //     _result,
-          //     (result, query) => void
-          //   );
-          // },
         },
       },
     }),

@@ -202,6 +202,19 @@ export type AddFavouriteMutation = (
   & Pick<Mutation, 'saveFavourite'>
 );
 
+export type CreateChecklistMutationVariables = Exact<{
+  userId: Scalars['Int'];
+}>;
+
+
+export type CreateChecklistMutation = (
+  { __typename?: 'Mutation' }
+  & { createChecklist: (
+    { __typename?: 'Checklist' }
+    & Pick<Checklist, 'userId'>
+  ) }
+);
+
 export type LoginMutationVariables = Exact<{
   username: Scalars['String'];
   password: Scalars['String'];
@@ -351,6 +364,17 @@ export const AddFavouriteDocument = gql`
 
 export function useAddFavouriteMutation() {
   return Urql.useMutation<AddFavouriteMutation, AddFavouriteMutationVariables>(AddFavouriteDocument);
+};
+export const CreateChecklistDocument = gql`
+    mutation CreateChecklist($userId: Int!) {
+  createChecklist(userId: $userId) {
+    userId
+  }
+}
+    `;
+
+export function useCreateChecklistMutation() {
+  return Urql.useMutation<CreateChecklistMutation, CreateChecklistMutationVariables>(CreateChecklistDocument);
 };
 export const LoginDocument = gql`
     mutation Login($username: String!, $password: String!) {

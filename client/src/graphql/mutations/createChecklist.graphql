@@ -1,0 +1,5 @@
+mutation CreateChecklist($userId: Int!) {
+  createChecklist(userId: $userId) {
+    userId
+  }
+}
