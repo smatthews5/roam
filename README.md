@@ -18,5 +18,3 @@ Roam is a website to explore and compare different locations to live in as a rem
 ## Screenshots
 
 <img src="./client/public/2.png" align='center'/>
-
-<img src="./client/public/3.png" align='center'/>
