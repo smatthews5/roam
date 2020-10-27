@@ -4,11 +4,6 @@
 
 Roam is a website to explore and compare different locations to live in as a remote worker and manage your move. Users can browse locations, sign up/log in with username and pasword, then save their favourites and keep track of a checklist of things to sort before moving.
 
-## Screenshots
-
-
-
-
 ## Tech Stack
 
 - React
@@ -19,3 +14,9 @@ Roam is a website to explore and compare different locations to live in as a rem
 - TypeORM
 - PostgreSQL
 - Chakra UI
+
+## Screenshots
+
+<img src="./client/public/2.png" align='center'/>
+
+<img src="./client/public/3.png" align='center'/>
