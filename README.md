@@ -4,6 +4,11 @@ Roam is a website to explore and compare different locations to live in as a rem
 
 ## Screenshots
 
+## Getting Started
+
+* You will need Node installed on your computer to run the app, once you have that installed run `npm install` in both the `client` and `server` directories
+* 
+
 ## Tech Stack
 
 - React
